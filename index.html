@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MonkeyType Goals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #313338;
+      font-family: 'Roboto Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px 40px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    header h1 {
+      color: #e2b714;
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.78rem;
+      font-weight: 300;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .add-btn {
+      background-color: #2b2d31;
+      border: none;
+      border-radius: 8px;
+      color: rgba(255,255,255,0.45);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.88rem;
+      padding: 14px 20px;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      width: 100%;
+    }
+    .add-btn:hover {
+      background-color: #35373d;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .goal-input-row {
+      display: flex;
+      align-items: center;
+      background-color: #2b2d31;
+      border-radius: 8px;
+      padding: 10px 14px;
+      gap: 12px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .goal-input-row textarea {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.88rem;
+      resize: none;
+      height: 42px;
+      line-height: 1.5;
+      padding-top: 4px;
+    }
+    .goal-input-row textarea::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+
+    .input-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .char-counter {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.72rem;
+      white-space: nowrap;
+    }
+
+    .pin-btn, .cancel-btn {
+      background: none;
+      border: none;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.82rem;
+      cursor: pointer;
+      white-space: nowrap;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+
+    .pin-btn {
+      color: #e2b714;
+    }
+    .pin-btn:hover { background: rgba(226,183,20,0.12); }
+
+    .cancel-btn {
+      color: rgba(255,255,255,0.45);
+    }
+    .cancel-btn:hover { background: rgba(255,255,255,0.07); }
+
+    .goal-card {
+      display: flex;
+      align-items: flex-start;
+      background-color: #2b2d31;
+      border-radius: 8px;
+      padding: 14px 16px;
+      gap: 14px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .goal-card .goal-text {
+      flex: 1;
+      color: #fff;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px;
+      flex-shrink: 0;
+      opacity: 0.55;
+      transition: opacity 0.15s;
+      display: flex;
+      align-items: center;
+    }
+    .delete-btn:hover { opacity: 1; }
+    .delete-btn svg { width: 18px; height: 18px; display: block; }
+
+    .fading {
+      animation: fadeOut 0.35s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; transform: scale(1); }
+      to   { opacity: 0; transform: scale(0.97); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>MonkeyType Goals</h1>
+  <p>Not promoted or endorsed by Miodec.</p>
+</header>
+
+<div class="container" id="goalsContainer">
+  <button class="add-btn" id="addBtn">+ Add a new goal...</button>
+</div>
+
+<script>
+  const STORAGE_KEY = 'monkeytype_goals';
+  const container = document.getElementById('goalsContainer');
+  const addBtn = document.getElementById('addBtn');
+  const MAX = 180;
+
+  function loadGoals() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function saveGoals(goals) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
+  }
+
+  function renderGoal(text, id) {
+    const card = document.createElement('div');
+    card.className = 'goal-card';
+    card.dataset.id = id;
+
+    const textEl = document.createElement('span');
+    textEl.className = 'goal-text';
+    textEl.textContent = text;
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'delete-btn';
+    delBtn.title = 'Remove goal';
+    delBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M21.5821 5.54289C21.9726 5.93342 21.9726 6.56658 21.5821 6.95711L10.2526 18.2867C9.86452 18.6747 9.23627 18.6775 8.84475 18.293L2.29929 11.8644C1.90527 11.4774 1.89956 10.8443 2.28655 10.4503C2.67354 10.0562 3.30668 10.0505 3.70071 10.4375L9.53911 16.1717L20.1679 5.54289C20.5584 5.15237 21.1916 5.15237 21.5821 5.54289Z"
+        fill="#ffffff"/>
+    </svg>`;
+
+    delBtn.addEventListener('click', () => {
+      card.classList.add('fading');
+      card.addEventListener('animationend', () => {
+        card.remove();
+        const goals = loadGoals().filter(g => g.id !== id);
+        saveGoals(goals);
+      });
+    });
+
+    card.appendChild(textEl);
+    card.appendChild(delBtn);
+    container.insertBefore(card, addBtn);
+  }
+
+  function showInputRow() {
+    addBtn.style.display = 'none';
+
+    const row = document.createElement('div');
+    row.className = 'goal-input-row';
+
+    const ta = document.createElement('textarea');
+    ta.placeholder = 'Type your goal here...';
+    ta.maxLength = MAX;
+
+    ta.addEventListener('input', () => {
+      ta.style.height = 'auto';
+      ta.style.height = ta.scrollHeight + 'px';
+      counter.textContent = `${ta.value.length}/${MAX}`;
+    });
+
+    const actions = document.createElement('div');
+    actions.className = 'input-actions';
+
+    const pinBtn = document.createElement('button');
+    pinBtn.className = 'pin-btn';
+    pinBtn.textContent = 'Pin';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'cancel-btn';
+    cancelBtn.textContent = 'Cancel';
+
+    const counter = document.createElement('span');
+    counter.className = 'char-counter';
+    counter.textContent = `0/${MAX}`;
+
+    function pinGoal() {
+      const text = ta.value.trim();
+      if (!text) {
+        row.remove();
+        addBtn.style.display = '';
+        return;
+      }
+      const id = Date.now().toString();
+      const goals = loadGoals();
+      goals.push({ id, text });
+      saveGoals(goals);
+      row.remove();
+      addBtn.style.display = '';
+      renderGoal(text, id);
+    }
+
+    function cancelGoal() {
+      row.remove();
+      addBtn.style.display = '';
+    }
+
+    pinBtn.addEventListener('click', pinGoal);
+    cancelBtn.addEventListener('click', cancelGoal);
+    ta.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); pinGoal(); }
+      if (e.key === 'Escape') { cancelGoal(); }
+    });
+
+    actions.appendChild(pinBtn);
+    actions.appendChild(cancelBtn);
+    actions.appendChild(counter);
+    row.appendChild(ta);
+    row.appendChild(actions);
+    container.insertBefore(row, addBtn);
+    ta.focus();
+  }
+
+  addBtn.addEventListener('click', showInputRow);
+
+  loadGoals().forEach(g => renderGoal(g.text, g.id));
+</script>
+</body>
+</html>
