@@ -585,7 +585,8 @@ function renderGoal(text, id) {
   card.appendChild(handle);
   card.appendChild(textEl);
   card.appendChild(actions);
-  container.insertBefore(card, addBtn);
+
+  container.appendChild(card);
 }
 
 function showInputRow() {
@@ -652,7 +653,8 @@ function showInputRow() {
   actionsEl.appendChild(counter);
   row.appendChild(ta);
   row.appendChild(actionsEl);
-  container.insertBefore(row, addBtn);
+
+  container.insertBefore(row, container.firstChild);
   ta.focus();
 }
 
