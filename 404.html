@@ -19,7 +19,7 @@
       padding: 60px 20px 40px;
     }
 
-      .middle {
+    .middle {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -41,6 +41,32 @@
       color: rgba(255,255,255,0.5);
       font-size: 0.92rem;
       font-weight: 300;
+    }
+
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #2c2e31;
+      border: none;
+      border-radius: 6px;
+      padding: 9px 16px;
+      color: rgba(255,255,255,0.75);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.82rem;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 4px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .home-btn:hover {
+      background-color: #35373d;
+      color: #fff;
+    }
+    .home-btn svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
     }
 
     header {
@@ -232,10 +258,16 @@
   </a>
 </header>
 
-  <div class="middle">
-    <div class="error-code">404</div>
-    <div class="error-msg">Page was not found.</div>
-  </div>
+<div class="middle">
+  <div class="error-code">404</div>
+  <div class="error-msg">Page was not found.</div>
+  <a href="/" class="home-btn">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0L0 6V8H1V15H4V10H7V15H15V8H16V6L14 4.5V1H11V2.25L8 0ZM9 10H12V13H9V10Z" fill="#ffffff"></path>
+    </svg>
+    Go Home
+  </a>
+</div>
 
 </body>
 </html>
