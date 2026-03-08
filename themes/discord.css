@@ -131,7 +131,7 @@
     .pin-btn {
       color: #5974ea;
     }
-    .pin-btn:hover { background: rgba(226,183,20,0.12); }
+    .pin-btn:hover { background: rgba(48,80,184,0.12); }
 
     .cancel-btn {
       color: rgba(255,255,255,0.45);
@@ -276,4 +276,28 @@
       color: rgba(255,255,255,0.2);
       font-size: 0.78rem;
       user-select: none;
+    }
+
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(255,255,255,0.5);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 300;
+      padding: 6px 8px;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+    .theme-toggle-btn:hover {
+      color: rgba(255,255,255,1);
+    }
+    .theme-toggle-btn svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
     }
