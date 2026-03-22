@@ -16,5 +16,5 @@ We don't take any data from you, including your personal information such as leg
 We have a Discord server for people who enjoy or want to support the development for Monkeytype Goals. or pretty much anything. We are a welcoming and inclusive community, and we would love to see you join. To join our Discord server, you can join by clicking [here](https://dsc.gg/mtgoals)
 
 # License
-Our project uses the MIT License, to view the license, you can click [this](https://github.com/konatify/mt-goals/LICENSE)
+Our project uses the MIT License, to view the license, you can click [this](https://github.com/konatify/mt-goals/blob/main/LICENSE)
 
