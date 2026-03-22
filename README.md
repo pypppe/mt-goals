@@ -12,6 +12,8 @@ Set goals for you to achieve in the typing test website created by Miodec, [Monk
 # Data Management
 We don't take any data from you, including your personal information such as legal name, house address, credit card numbers, etc... Monkeytype Goals is a website designed to help users track goals for the typing test website Monkeytype, so it would be quite pointless to add tracking
 
+More information; [Privacy Policy page](https://www.mtgoals.cc/pages/policy)
+
 # Discord server
 We have a Discord server for people who enjoy or want to support the development for Monkeytype Goals. or pretty much anything. We are a welcoming and inclusive community, and we would love to see you join. To join our Discord server, you can join by clicking [here](https://dsc.gg/mtgoals)
 
