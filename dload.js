@@ -28,7 +28,7 @@ if (_orig('monkeytype_goals_theme') === 'discord') {
     fontFamily: "'Roboto Mono', monospace",
     fontSize: '1.4rem',
     fontWeight: '500',
-    color: '#e2b714',
+    color: '#5974ea',
   });
 
   overlay.appendChild(text);
