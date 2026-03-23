@@ -37,5 +37,5 @@ if (_orig('monkeytype_goals_theme') === 'discord') {
   setTimeout(() => {
     overlay.style.opacity = '0';
     overlay.addEventListener('transitionend', () => overlay.remove());
-  }, 1000);
+  }, 500);
 }
