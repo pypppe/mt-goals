@@ -1,4 +1,6 @@
-if (localStorage.getItem('monkeytype_goals') !== null) {
+const _orig = localStorage.getItem.bind(localStorage);
+
+if (_orig('monkeytype_goals') !== null) {
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = 'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap';
@@ -32,7 +34,6 @@ if (localStorage.getItem('monkeytype_goals') !== null) {
   overlay.appendChild(text);
   document.body.appendChild(overlay);
 
-  const _orig = localStorage.getItem.bind(localStorage);
   localStorage.getItem = function(key) {
     const result = _orig(key);
     if (key === 'monkeytype_goals') {
