@@ -9,11 +9,9 @@
         :root {
             --bg-color: #323437;
             --main-color: #e2b714;
-            --caret-color: #e2b714;
             --sub-color: #646669;
             --sub-alt-color: #2c2e31;
             --text-color: #d1d0c5;
-            --error-color: #ca4754;
         }
 
         body {
@@ -27,248 +25,222 @@
             padding: 20px;
         }
 
-        #container {
-            width: 100%;
-            max-width: 600px;
-        }
+        #container { width: 100%; max-width: 600px; }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            color: var(--sub-color);
-        }
-
-        .header span { color: var(--main-color); }
-
-        /* Compose Area */
+        /* Compose Area (Original Design) */
         #compose {
-            background: var(--sub-alt-color);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--sub-alt-color);
+            padding-bottom: 20px;
         }
 
-        #compose-name {
-            color: var(--main-color);
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-            cursor: pointer;
-            display: inline-block;
-        }
+        #compose-name { color: var(--main-color); margin-bottom: 10px; cursor: pointer; display: inline-block; font-size: 0.9rem;}
 
         textarea {
-            width: 100%;
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            font-family: 'Roboto Mono', monospace;
-            font-size: 1rem;
-            resize: none;
-            outline: none;
-            height: 60px;
+            width: 100%; background: transparent; border: none; color: var(--text-color);
+            font-family: 'Roboto Mono'; font-size: 1.2rem; resize: none; outline: none; height: 50px;
         }
 
-        .compose-footer {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
+        #post-btn {
+            background: transparent; border: none; color: var(--sub-color);
+            cursor: pointer; font-family: 'Roboto Mono'; transition: 0.2s; padding: 0;
         }
+        #post-btn:hover { color: var(--text-color); }
 
-        button#post-btn {
-            background: transparent;
-            border: 1px solid var(--sub-color);
-            color: var(--sub-color);
-            padding: 5px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Roboto Mono';
-            transition: 0.2s;
-        }
-
-        button#post-btn:hover:not(:disabled) {
-            border-color: var(--main-color);
-            color: var(--main-color);
-        }
-
-        /* Posts */
+        /* Post Cards */
         .post-card {
-            border-bottom: 1px solid var(--sub-alt-color);
-            padding: 15px 0;
+            margin-bottom: 25px;
             animation: fadeIn 0.3s ease;
         }
 
-        .post-name { color: var(--main-color); font-size: 0.9rem; margin-bottom: 5px; }
-        .post-content { line-height: 1.5; font-size: 1rem; }
-        .post-time { color: var(--sub-color); font-size: 0.7rem; margin-top: 10px; }
+        .post-header { display: flex; justify-content: space-between; align-items: center; }
+        .post-name { color: var(--main-color); font-size: 0.9rem; }
+        .post-content { margin: 8px 0; font-size: 1.1rem; line-height: 1.4; }
+        .post-footer { display: flex; gap: 15px; align-items: center; }
+        .post-time { color: var(--sub-color); font-size: 0.7rem; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Reply Button SVG */
+        .reply-icon {
+            width: 16px; height: 16px; fill: var(--sub-color); cursor: pointer; transition: 0.2s;
+        }
+        .reply-icon:hover { fill: var(--main-color); }
+
+        /* Replies Container */
+        .replies-container {
+            margin-left: 30px;
+            margin-top: 10px;
+            border-left: 2px solid var(--sub-alt-color);
+            padding-left: 15px;
         }
 
-        /* Overlay for Name */
+        .reply-card { margin-bottom: 15px; font-size: 0.9rem; }
+        .reply-card .post-content { font-size: 0.95rem; }
+
+        .view-more {
+            color: var(--main-color);
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Name Overlay */
         #name-overlay {
             position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.8); display: none;
+            background: rgba(0,0,0,0.9); display: none;
             justify-content: center; align-items: center; z-index: 100;
         }
-        .name-box { background: var(--bg-color); padding: 30px; border-radius: 8px; text-align: center; }
         .name-box input { 
-            background: var(--sub-alt-color); border: 1px solid var(--sub-color);
-            color: var(--text-color); padding: 10px; outline: none; font-family: 'Roboto Mono';
+            background: transparent; border: none; border-bottom: 2px solid var(--main-color);
+            color: var(--text-color); font-size: 2rem; text-align: center; outline: none; font-family: 'Roboto Mono';
         }
     </style>
 </head>
 <body>
 
     <div id="container">
-        <div class="header">
-            <div>mtgoals // <span>feed</span></div>
-            <a href="/" style="color: inherit; text-decoration: none; font-size: 0.8rem;">back to goals</a>
-        </div>
-
         <div id="compose">
-            <div id="compose-name" onclick="promptNameChange()">loading...</div>
-            <textarea id="compose-ta" placeholder="What's your goal?"></textarea>
-            <div class="compose-footer">
-                <button id="post-btn">post</button>
+            <div id="compose-name" onclick="promptName()">loading...</div>
+            <textarea id="compose-ta" placeholder="type your goal..."></textarea>
+            <div style="display:flex; justify-content: space-between; align-items: center;">
+                <span id="reply-label" style="font-size: 0.7rem; color: var(--main-color); display:none;"></span>
+                <button id="post-btn">press enter to post</button>
             </div>
         </div>
-
         <div id="feed"></div>
     </div>
 
     <div id="name-overlay">
         <div class="name-box">
-            <p>Enter a display name</p>
-            <input type="text" id="name-input" maxlength="20">
-            <button id="save-name-btn" style="display:block; margin: 10px auto; background: var(--main-color); border:none; padding: 5px 15px; border-radius:4px; cursor:pointer;">Save</button>
+            <input type="text" id="name-input" placeholder="display name" maxlength="20">
         </div>
     </div>
 
     <script>
-        const sbUrl = "sburl"; // Vercel will replace this
-        const sbKey = "sbkey"; // Vercel will replace this
-
+        const sbUrl = "sburl";
+        const sbKey = "sbkey";
         const NAME_KEY = 'mtg_display_name';
         let myName = localStorage.getItem(NAME_KEY) || '';
         let replyingTo = null;
 
+        const feed = document.getElementById('feed');
         const composeName = document.getElementById('compose-name');
         const composeTa = document.getElementById('compose-ta');
         const postBtn = document.getElementById('post-btn');
-        const feed = document.getElementById('feed');
-        const nameOverlay = document.getElementById('name-overlay');
-        const nameInput = document.getElementById('name-input');
-        const saveNameBtn = document.getElementById('save-name-btn');
 
         function sbHeaders() {
-            return {
-                "apikey": sbKey,
-                "Authorization": `Bearer ${sbKey}`,
-                "Content-Type": "application/json",
-                "Prefer": "return=representation"
-            };
+            return { "apikey": sbKey, "Authorization": `Bearer ${sbKey}`, "Content-Type": "application/json" };
         }
 
-        // Initialize Name
-        if (!myName) {
-            nameOverlay.style.display = 'flex';
-        } else {
-            composeName.textContent = myName;
-        }
+        // Init Name
+        if(!myName) document.getElementById('name-overlay').style.display='flex';
+        else composeName.textContent = myName;
 
-        saveNameBtn.onclick = () => {
-            const val = nameInput.value.trim();
-            if (val) {
-                localStorage.setItem(NAME_KEY, val);
-                myName = val;
-                composeName.textContent = myName;
-                nameOverlay.style.display = 'none';
+        document.getElementById('name-input').onkeydown = (e) => {
+            if(e.key === 'Enter') {
+                const val = e.target.value.trim();
+                if(val) {
+                    localStorage.setItem(NAME_KEY, val);
+                    myName = val;
+                    composeName.textContent = myName;
+                    document.getElementById('name-overlay').style.display='none';
+                }
             }
         };
 
-        function promptNameChange() {
-            if (replyingTo) {
-                replyingTo = null;
-                composeTa.placeholder = "What's your goal?";
+        function promptName() {
+            if(replyingTo) { 
+                replyingTo = null; 
+                document.getElementById('reply-label').style.display='none';
                 composeName.textContent = myName;
+                composeTa.placeholder = "type your goal...";
                 return;
             }
-            nameOverlay.style.display = 'flex';
+            document.getElementById('name-overlay').style.display='flex';
         }
 
-        function setReply(id, name) {
+        function startReply(id, name) {
             replyingTo = id;
-            composeTa.placeholder = `Replying to ${name}...`;
-            composeName.textContent = "cancel reply";
+            document.getElementById('reply-label').textContent = `replying to ${name}`;
+            document.getElementById('reply-label').style.display = 'block';
+            composeName.textContent = "cancel";
             composeTa.focus();
         }
 
-        postBtn.onclick = async () => {
+        async function sendPost() {
             const text = composeTa.value.trim();
-            if (!text || !myName) return;
-            postBtn.disabled = true;
+            if(!text || !myName) return;
             try {
                 await fetch(`${sbUrl}/rest/v1/posts`, {
                     method: 'POST',
                     headers: sbHeaders(),
-                    body: JSON.stringify({ 
-                        display_name: myName, 
-                        content: text,
-                        parent_id: replyingTo 
-                    })
+                    body: JSON.stringify({ display_name: myName, content: text, parent_id: replyingTo })
                 });
                 location.reload();
-            } catch(e) { 
-                alert('Check connection.'); 
-                postBtn.disabled = false; 
-            }
-        };
-
-        async function fetchPosts() {
-            try {
-                const res = await fetch(`${sbUrl}/rest/v1/posts?select=*&order=created_at.desc`, {
-                    headers: sbHeaders()
-                });
-                const posts = await res.json();
-                feed.innerHTML = '';
-                posts.forEach(post => {
-                    feed.appendChild(createCard(post));
-                });
-            } catch(e) { console.error(e); }
+            } catch(e) { alert('error'); }
         }
 
-        function createCard(post) {
-            const card = document.createElement('div');
-            card.className = 'post-card';
-            if (post.parent_id) {
-                card.style.marginLeft = '28px';
-                card.style.borderLeft = '2px solid rgba(226, 183, 20, 0.2)';
-                card.style.paddingLeft = '15px';
-            }
+        composeTa.onkeydown = (e) => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendPost(); } };
+        postBtn.onclick = sendPost;
 
-            card.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div>
-                        <div class="post-name">
-                            ${post.display_name} 
-                            ${post.parent_id ? '<span style="color:rgba(255,255,255,0.2); font-size:0.65rem; margin-left:5px;">replied</span>' : ''}
-                        </div>
-                        <div class="post-content">${post.content}</div>
-                    </div>
-                    <button onclick="setReply(${post.id}, '${post.display_name}')" style="background:none; border:none; cursor:pointer; width:18px; padding:0; margin-top:4px; opacity:0.3; transition:0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.3">
-                        <svg fill="#e2b714" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20,3H4A2,2,0,0,0,2,5V22l5.36-5H20a2,2,0,0,0,2-2V5A2,2,0,0,0,20,3Z"></path></svg>
-                    </button>
+        async function loadFeed() {
+            const res = await fetch(`${sbUrl}/rest/v1/posts?select=*&order=created_at.desc`, { headers: sbHeaders() });
+            const allPosts = await res.json();
+            
+            const mainPosts = allPosts.filter(p => !p.parent_id);
+            const replies = allPosts.filter(p => p.parent_id);
+
+            feed.innerHTML = '';
+            mainPosts.forEach(post => {
+                const postReplies = replies.filter(r => r.parent_id === post.id).reverse();
+                const postEl = createPostMarkup(post, postReplies);
+                feed.appendChild(postEl);
+            });
+        }
+
+        function createPostMarkup(post, postReplies) {
+            const div = document.createElement('div');
+            div.className = 'post-card';
+            
+            let repliesHtml = '';
+            postReplies.slice(0, 5).forEach(r => {
+                repliesHtml += `
+                    <div class="reply-card">
+                        <div class="post-name">${r.display_name}</div>
+                        <div class="post-content">${r.content}</div>
+                    </div>`;
+            });
+
+            const moreCount = postReplies.length - 5;
+            const viewMore = moreCount > 0 ? `<div class="view-more" onclick="showAllReplies(this)">+ view ${moreCount} more replies</div>` : '';
+
+            div.innerHTML = `
+                <div class="post-header">
+                    <div class="post-name">${post.display_name}</div>
+                    <svg class="reply-icon" onclick="startReply(${post.id}, '${post.display_name}')" viewBox="0 0 24 24"><path d="M20,3H4A2,2,0,0,0,2,5V22l5.36-5H20a2,2,0,0,0,2-2V5A2,2,0,0,0,20,3Z"></path></svg>
                 </div>
-                <div class="post-time">${new Date(post.created_at).toLocaleString()}</div>
+                <div class="post-content">${post.content}</div>
+                <div class="post-time">${new Date(post.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                <div class="replies-container" id="replies-${post.id}">
+                    ${repliesHtml}
+                    <div class="hidden-replies" style="display:none;">
+                        ${postReplies.slice(5).map(r => `<div class="reply-card"><div class="post-name">${r.display_name}</div><div class="post-content">${r.content}</div></div>`).join('')}
+                    </div>
+                    ${viewMore}
+                </div>
             `;
-            return card;
+            return div;
         }
 
-        fetchPosts();
+        function showAllReplies(btn) {
+            const container = btn.parentElement.querySelector('.hidden-replies');
+            container.style.display = 'block';
+            btn.style.display = 'none';
+        }
+
+        loadFeed();
     </script>
 </body>
 </html>
