@@ -1,184 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Monkeytype Goals</title>
-  <link rel="icon" type="image/png" href="/images/mtg.png">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: #313338; font-family: 'Roboto Mono', monospace; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 20px 100px; }
-    header { text-align: center; margin-bottom: 48px; }
-    header .logo { height: 70px; width: auto; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; }
-    header p { color: rgba(255,255,255,0.5); font-size: 0.78rem; font-weight: 300; }
-    header a.mt-link { display: inline-flex; align-items: center; gap: 5px; color: rgba(255,255,255,0.5); font-size: 0.78rem; font-weight: 300; text-decoration: none; transition: color 0.2s; margin-top: 6px; }
-    header a.mt-link:hover { color: rgba(255,255,255,0.8); }
-    header a.mt-link svg { width: 11px; height: 11px; flex-shrink: 0; }
-    .container { width: 100%; max-width: 680px; display: flex; flex-direction: column; }
-    #compose { background: #2b2d31; border-radius: 8px 8px 0 0; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 2px; }
-    #compose-top { display: flex; align-items: flex-start; gap: 12px; }
-    #compose-name { color: #e2b714; font-size: 0.78rem; font-weight: 500; white-space: nowrap; padding-top: 5px; flex-shrink: 0; cursor: pointer; }
-    #compose-name.locked { cursor: default; }
-    #compose-name:not(.locked):hover { text-decoration: underline; }
-    #compose textarea { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-family: 'Roboto Mono', monospace; font-size: 0.88rem; resize: none; min-height: 42px; line-height: 1.6; padding-top: 3px; }
-    #compose textarea::placeholder { color: rgba(255,255,255,0.25); }
-    #compose-footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
-    #compose-counter { color: rgba(255,255,255,0.35); font-size: 0.72rem; }
-    #post-btn { background: #e2b714; border: none; border-radius: 6px; color: #1a1a1a; cursor: pointer; font-family: 'Roboto Mono', monospace; font-size: 0.82rem; font-weight: 600; padding: 7px 16px; transition: opacity 0.2s; }
-    #post-btn:hover { opacity: 0.85; }
-    #post-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    #posts-feed { display: flex; flex-direction: column; }
-    .post-card { background: #2b2d31; padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); animation: fadeIn 0.2s ease; }
-    .post-name { color: #e2b714; font-size: 0.78rem; font-weight: 500; margin-bottom: 5px; }
-    .post-content { color: #fff; font-size: 0.88rem; line-height: 1.65; word-break: break-word; white-space: pre-wrap; }
-    .post-time { color: rgba(255,255,255,0.25); font-size: 0.7rem; margin-top: 7px; }
-    #load-sentinel { height: 40px; flex-shrink: 0; }
-    .status-line { text-align: center; color: rgba(255,255,255,0.25); font-size: 0.78rem; padding: 22px 0; background: #2b2d31; border-radius: 0 0 8px 8px; }
-    .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.12); border-top-color: #e2b714; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 20px auto; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-    #name-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 100; }
-    #name-modal { background: #2b2d31; border-radius: 10px; padding: 28px 24px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; }
-    #name-modal h2 { color: #fff; font-size: 0.95rem; font-weight: 500; }
-    #name-modal p { color: rgba(255,255,255,0.45); font-size: 0.78rem; line-height: 1.6; }
-    #name-input { background: #1e1f22; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-family: 'Roboto Mono', monospace; font-size: 0.88rem; padding: 10px 13px; outline: none; }
-    #set-name-btn { background: #e2b714; border: none; border-radius: 6px; color: #1a1a1a; cursor: pointer; font-family: 'Roboto Mono', monospace; font-size: 0.82rem; font-weight: 600; padding: 8px 18px; }
-    .footer { position: fixed; bottom: 28px; left: 28px; display: flex; align-items: center; gap: 4px; }
-    .footer-link { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.5); font-size: 0.78rem; text-decoration: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mtgoals // feed</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #323437;
+            --main-color: #e2b714;
+            --caret-color: #e2b714;
+            --sub-color: #646669;
+            --sub-alt-color: #2c2e31;
+            --text-color: #d1d0c5;
+            --error-color: #ca4754;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: var(--sub-color);
+        }
+
+        .header span { color: var(--main-color); }
+
+        /* Compose Area */
+        #compose {
+            background: var(--sub-alt-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        #compose-name {
+            color: var(--main-color);
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            height: 60px;
+        }
+
+        .compose-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        button#post-btn {
+            background: transparent;
+            border: 1px solid var(--sub-color);
+            color: var(--sub-color);
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Roboto Mono';
+            transition: 0.2s;
+        }
+
+        button#post-btn:hover:not(:disabled) {
+            border-color: var(--main-color);
+            color: var(--main-color);
+        }
+
+        /* Posts */
+        .post-card {
+            border-bottom: 1px solid var(--sub-alt-color);
+            padding: 15px 0;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .post-name { color: var(--main-color); font-size: 0.9rem; margin-bottom: 5px; }
+        .post-content { line-height: 1.5; font-size: 1rem; }
+        .post-time { color: var(--sub-color); font-size: 0.7rem; margin-top: 10px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Overlay for Name */
+        #name-overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.8); display: none;
+            justify-content: center; align-items: center; z-index: 100;
+        }
+        .name-box { background: var(--bg-color); padding: 30px; border-radius: 8px; text-align: center; }
+        .name-box input { 
+            background: var(--sub-alt-color); border: 1px solid var(--sub-color);
+            color: var(--text-color); padding: 10px; outline: none; font-family: 'Roboto Mono';
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <img src="/images/mtgoals.png" alt="Monkeytype Goals" class="logo" />
-  <p>Not promoted or endorsed by Miodec.</p>
-</header>
+    <div id="container">
+        <div class="header">
+            <div>mtgoals // <span>feed</span></div>
+            <a href="/" style="color: inherit; text-decoration: none; font-size: 0.8rem;">back to goals</a>
+        </div>
 
-<div class="container">
-  <div id="compose">
-    <div id="compose-top">
-      <span id="compose-name">set name…</span>
-      <textarea id="compose-ta" placeholder="What's your goal?" maxlength="280" rows="1"></textarea>
+        <div id="compose">
+            <div id="compose-name" onclick="promptNameChange()">loading...</div>
+            <textarea id="compose-ta" placeholder="What's your goal?"></textarea>
+            <div class="compose-footer">
+                <button id="post-btn">post</button>
+            </div>
+        </div>
+
+        <div id="feed"></div>
     </div>
-    <div id="compose-footer">
-      <span id="compose-counter">0 / 280</span>
-      <button id="post-btn" disabled>Post</button>
+
+    <div id="name-overlay">
+        <div class="name-box">
+            <p>Enter a display name</p>
+            <input type="text" id="name-input" maxlength="20">
+            <button id="save-name-btn" style="display:block; margin: 10px auto; background: var(--main-color); border:none; padding: 5px 15px; border-radius:4px; cursor:pointer;">Save</button>
+        </div>
     </div>
-  </div>
 
-  <div id="posts-feed"></div>
-  <div id="load-sentinel"></div>
-</div>
+    <script>
+        const sbUrl = "sburl"; // Vercel will replace this
+        const sbKey = "sbkey"; // Vercel will replace this
 
-<div id="name-modal-overlay" style="display:none;">
-  <div id="name-modal">
-    <h2>Choose your display name</h2>
-    <p>This is permanent and can only be set once.</p>
-    <input id="name-input" type="text" maxlength="32" placeholder="your name..." autocomplete="off" />
-    <button id="set-name-btn">Set name</button>
-  </div>
-</div>
+        const NAME_KEY = 'mtg_display_name';
+        let myName = localStorage.getItem(NAME_KEY) || '';
+        let replyingTo = null;
 
-<script>
-  // These placeholders will be replaced by Vercel during build
-  const sbUrl = "sburl";
-  const sbKey = "sbkey";
+        const composeName = document.getElementById('compose-name');
+        const composeTa = document.getElementById('compose-ta');
+        const postBtn = document.getElementById('post-btn');
+        const feed = document.getElementById('feed');
+        const nameOverlay = document.getElementById('name-overlay');
+        const nameInput = document.getElementById('name-input');
+        const saveNameBtn = document.getElementById('save-name-btn');
 
-  const NAME_KEY = 'mtg_display_name';
-  const PAGE_SIZE = 20;
+        function sbHeaders() {
+            return {
+                "apikey": sbKey,
+                "Authorization": `Bearer ${sbKey}`,
+                "Content-Type": "application/json",
+                "Prefer": "return=representation"
+            };
+        }
 
-  let myName = localStorage.getItem(NAME_KEY) || '';
-  let page = 0;
-  let loading = false;
-  let exhausted = false;
-  let prepended = 0;
+        // Initialize Name
+        if (!myName) {
+            nameOverlay.style.display = 'flex';
+        } else {
+            composeName.textContent = myName;
+        }
 
-  const composeName = document.getElementById('compose-name');
-  const composeTa = document.getElementById('compose-ta');
-  const composeCounter = document.getElementById('compose-counter');
-  const postBtn = document.getElementById('post-btn');
-  const feed = document.getElementById('posts-feed');
-  const sentinel = document.getElementById('load-sentinel');
-  const nameOverlay = document.getElementById('name-modal-overlay');
-  const nameInput = document.getElementById('name-input');
-  const setNameBtn = document.getElementById('set-name-btn');
+        saveNameBtn.onclick = () => {
+            const val = nameInput.value.trim();
+            if (val) {
+                localStorage.setItem(NAME_KEY, val);
+                myName = val;
+                composeName.textContent = myName;
+                nameOverlay.style.display = 'none';
+            }
+        };
 
-  function sbHeaders() {
-    return { 'apikey': sbKey, 'Authorization': 'Bearer ' + sbKey, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
-  }
+        function promptNameChange() {
+            if (replyingTo) {
+                replyingTo = null;
+                composeTa.placeholder = "What's your goal?";
+                composeName.textContent = myName;
+                return;
+            }
+            nameOverlay.style.display = 'flex';
+        }
 
-  async function fetchPosts(offset) {
-    const url = `${sbUrl}/rest/v1/posts?select=display_name,content,created_at&order=created_at.desc&offset=${offset}&limit=${PAGE_SIZE}`;
-    const res = await fetch(url, { headers: sbHeaders() });
-    return res.json();
-  }
+        function setReply(id, name) {
+            replyingTo = id;
+            composeTa.placeholder = `Replying to ${name}...`;
+            composeName.textContent = "cancel reply";
+            composeTa.focus();
+        }
 
-  async function insertPost(display_name, content) {
-    const res = await fetch(`${sbUrl}/rest/v1/posts`, {
-      method: 'POST',
-      headers: sbHeaders(),
-      body: JSON.stringify({ display_name, content })
-    });
-    if (!res.ok) throw new Error('Failed');
-  }
+        postBtn.onclick = async () => {
+            const text = composeTa.value.trim();
+            if (!text || !myName) return;
+            postBtn.disabled = true;
+            try {
+                await fetch(`${sbUrl}/rest/v1/posts`, {
+                    method: 'POST',
+                    headers: sbHeaders(),
+                    body: JSON.stringify({ 
+                        display_name: myName, 
+                        content: text,
+                        parent_id: replyingTo 
+                    })
+                });
+                location.reload();
+            } catch(e) { 
+                alert('Check connection.'); 
+                postBtn.disabled = false; 
+            }
+        };
 
-  function updateComposeName() {
-    if (myName) { composeName.textContent = myName; composeName.classList.add('locked'); }
-    else { composeName.textContent = 'set name…'; }
-  }
+        async function fetchPosts() {
+            try {
+                const res = await fetch(`${sbUrl}/rest/v1/posts?select=*&order=created_at.desc`, {
+                    headers: sbHeaders()
+                });
+                const posts = await res.json();
+                feed.innerHTML = '';
+                posts.forEach(post => {
+                    feed.appendChild(createCard(post));
+                });
+            } catch(e) { console.error(e); }
+        }
 
-  composeName.onclick = () => { if (!myName) nameOverlay.style.display = 'flex'; };
-  setNameBtn.onclick = () => {
-    const v = nameInput.value.trim();
-    if (v) { myName = v; localStorage.setItem(NAME_KEY, v); nameOverlay.style.display = 'none'; updateComposeName(); }
-  };
+        function createCard(post) {
+            const card = document.createElement('div');
+            card.className = 'post-card';
+            if (post.parent_id) {
+                card.style.marginLeft = '28px';
+                card.style.borderLeft = '2px solid rgba(226, 183, 20, 0.2)';
+                card.style.paddingLeft = '15px';
+            }
 
-  composeTa.oninput = () => {
-    composeTa.style.height = 'auto';
-    composeTa.style.height = composeTa.scrollHeight + 'px';
-    const len = composeTa.value.length;
-    composeCounter.textContent = `${len} / 280`;
-    postBtn.disabled = len === 0 || len > 280;
-  };
+            card.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <div class="post-name">
+                            ${post.display_name} 
+                            ${post.parent_id ? '<span style="color:rgba(255,255,255,0.2); font-size:0.65rem; margin-left:5px;">replied</span>' : ''}
+                        </div>
+                        <div class="post-content">${post.content}</div>
+                    </div>
+                    <button onclick="setReply(${post.id}, '${post.display_name}')" style="background:none; border:none; cursor:pointer; width:18px; padding:0; margin-top:4px; opacity:0.3; transition:0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.3">
+                        <svg fill="#e2b714" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20,3H4A2,2,0,0,0,2,5V22l5.36-5H20a2,2,0,0,0,2-2V5A2,2,0,0,0,20,3Z"></path></svg>
+                    </button>
+                </div>
+                <div class="post-time">${new Date(post.created_at).toLocaleString()}</div>
+            `;
+            return card;
+        }
 
-  postBtn.onclick = async () => {
-    const text = composeTa.value.trim();
-    if (!text || !myName) return;
-    postBtn.disabled = true;
-    try {
-      await insertPost(myName, text);
-      composeTa.value = '';
-      prependPost({ display_name: myName, content: text, created_at: new Date().toISOString() });
-    } catch(e) { alert('Check connection.'); postBtn.disabled = false; }
-  };
-
-  function createCard(post) {
-    const card = document.createElement('div');
-    card.className = 'post-card';
-    card.innerHTML = `<div class="post-name">${post.display_name}</div><div class="post-content">${post.content}</div><div class="post-time">${new Date(post.created_at).toLocaleString()}</div>`;
-    return card;
-  }
-
-  function prependPost(post) { feed.insertBefore(createCard(post), feed.firstChild); prepended++; }
-
-  async function loadMore() {
-    if (loading || exhausted) return;
-    loading = true;
-    try {
-      const posts = await fetchPosts(page * PAGE_SIZE + prepended);
-      posts.forEach(p => feed.appendChild(createCard(p)));
-      if (posts.length < PAGE_SIZE) exhausted = true;
-      page++;
-    } catch(e) {}
-    loading = false;
-  }
-
-  const observer = new IntersectionObserver(entries => { if (entries[0].isIntersecting) loadMore(); }, { rootMargin: '300px' });
-  observer.observe(sentinel);
-
-  updateComposeName();
-  loadMore();
-</script>
+        fetchPosts();
+    </script>
 </body>
 </html>
