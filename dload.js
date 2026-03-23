@@ -34,14 +34,21 @@ if (_orig('monkeytype_goals') !== null) {
   overlay.appendChild(text);
   document.body.appendChild(overlay);
 
+  const showedAt = Date.now();
+  const MIN_DISPLAY = 600;
+
   localStorage.getItem = function(key) {
     const result = _orig(key);
     if (key === 'monkeytype_goals') {
       localStorage.getItem = _orig;
-      requestAnimationFrame(() => {
-        overlay.style.opacity = '0';
-        overlay.addEventListener('transitionend', () => overlay.remove());
-      });
+      const elapsed = Date.now() - showedAt;
+      const remaining = Math.max(0, MIN_DISPLAY - elapsed);
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          overlay.style.opacity = '0';
+          overlay.addEventListener('transitionend', () => overlay.remove());
+        });
+      }, remaining);
     }
     return result;
   };
