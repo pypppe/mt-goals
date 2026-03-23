@@ -57,51 +57,142 @@
       flex-direction: column;
     }
 
-    #config-banner {
-      background: #1e1f22;
-      border: 1px solid rgba(226,183,20,0.35);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 24px;
+    /* ── Setup wizard ── */
+    #setup {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      margin-bottom: 0;
     }
-    #config-banner p {
-      color: rgba(255,255,255,0.6);
+
+    .step {
+      background: #2b2d31;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e2b714;
+      color: #1a1a1a;
+      font-size: 0.72rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step.done .step-num {
+      background: #3a3d43;
+      color: rgba(255,255,255,0.4);
+    }
+    .step.done .step-num::after {
+      content: '✓';
+      font-size: 0.72rem;
+    }
+    .step.done .step-num span { display: none; }
+
+    .step-title {
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 500;
+      flex: 1;
+    }
+    .step.done .step-title {
+      color: rgba(255,255,255,0.35);
+    }
+
+    .step-body {
+      padding: 0 16px 16px 52px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .step.done .step-body { display: none; }
+
+    .step-body p {
+      color: rgba(255,255,255,0.5);
       font-size: 0.78rem;
       line-height: 1.7;
     }
-    #config-banner p strong { color: #e2b714; font-weight: 500; }
-    #config-banner p a { color: #e2b714; }
-    #config-banner code {
-      display: block;
-      background: rgba(0,0,0,0.3);
-      border-radius: 4px;
-      padding: 8px 10px;
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.8;
-      margin-top: 4px;
-      overflow-x: auto;
-      white-space: pre;
+    .step-body p a {
+      color: #e2b714;
+      text-decoration: none;
     }
-    .config-inputs { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
-    .config-inputs input {
-      background: #2b2d31;
-      border: 1px solid rgba(255,255,255,0.1);
+    .step-body p a:hover { text-decoration: underline; }
+
+    .step-body p strong {
+      color: rgba(255,255,255,0.8);
+      font-weight: 500;
+    }
+
+    .hint-img {
+      background: #1e1f22;
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.72rem;
+      line-height: 1.6;
+      border-left: 2px solid rgba(226,183,20,0.4);
+    }
+    .hint-img span {
+      color: #e2b714;
+      font-weight: 500;
+    }
+
+    .sql-block {
+      background: #1a1b1e;
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.9;
+      white-space: pre;
+      overflow-x: auto;
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255,255,255,0.07);
+      border: none;
+      border-radius: 4px;
+      color: rgba(255,255,255,0.45);
+      cursor: pointer;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+    .step-input {
+      background: #1e1f22;
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 6px;
       color: #fff;
       font-family: 'Roboto Mono', monospace;
       font-size: 0.78rem;
-      padding: 9px 12px;
+      padding: 10px 12px;
       outline: none;
       transition: border-color 0.2s;
       width: 100%;
     }
-    .config-inputs input:focus { border-color: rgba(226,183,20,0.6); }
-    .config-inputs input::placeholder { color: rgba(255,255,255,0.25); }
-    .config-save-btn {
+    .step-input:focus { border-color: rgba(226,183,20,0.5); }
+    .step-input::placeholder { color: rgba(255,255,255,0.2); }
+
+    .step-btn {
       background: #e2b714;
       border: none;
       border-radius: 6px;
@@ -114,8 +205,16 @@
       align-self: flex-start;
       transition: opacity 0.2s;
     }
-    .config-save-btn:hover { opacity: 0.85; }
+    .step-btn:hover { opacity: 0.85; }
+    .step-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
+    .error-msg {
+      color: #ff6b6b;
+      font-size: 0.75rem;
+      display: none;
+    }
+
+    /* ── Compose ── */
     #compose {
       background: #2b2d31;
       border-radius: 8px 8px 0 0;
@@ -169,6 +268,7 @@
     #post-btn:hover { opacity: 0.85; }
     #post-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
+    /* ── Name modal ── */
     #name-modal-overlay {
       position: fixed;
       inset: 0;
@@ -221,6 +321,7 @@
     }
     #set-name-btn:hover { opacity: 0.85; }
 
+    /* ── Feed ── */
     #posts-feed { display: flex; flex-direction: column; }
 
     .post-card {
@@ -228,10 +329,6 @@
       padding: 14px 16px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
       animation: fadeIn 0.2s ease;
-    }
-    .post-card:last-of-type {
-      border-radius: 0 0 8px 8px;
-      border-bottom: none;
     }
     .post-name { color: #e2b714; font-size: 0.78rem; font-weight: 500; margin-bottom: 5px; }
     .post-content { color: #fff; font-size: 0.88rem; line-height: 1.65; word-break: break-word; white-space: pre-wrap; }
@@ -243,7 +340,9 @@
       text-align: center;
       color: rgba(255,255,255,0.25);
       font-size: 0.78rem;
-      padding: 22px 0 8px;
+      padding: 22px 0;
+      background: #2b2d31;
+      border-radius: 0 0 8px 8px;
     }
 
     .spinner {
@@ -312,9 +411,30 @@
 
 <div class="container">
 
-  <div id="config-banner">
-    <p><strong>One-time setup.</strong> Create a free project at <a href="https://supabase.com" target="_blank">supabase.com</a>, then run this in the SQL editor:</p>
-    <code>create table posts (
+  <!-- Setup wizard -->
+  <div id="setup">
+
+    <!-- Step 1: Create project -->
+    <div class="step" id="step1">
+      <div class="step-header">
+        <div class="step-num"><span>1</span></div>
+        <div class="step-title">Create a free Supabase project</div>
+      </div>
+      <div class="step-body">
+        <p>Go to <a href="https://supabase.com" target="_blank">supabase.com</a> and sign up for free. Then click <strong>"New project"</strong>. Give it any name you want, set a password, pick any region, and click <strong>"Create new project"</strong>. Wait about 30 seconds for it to finish.</p>
+        <button class="step-btn" id="step1-done-btn">Done, I made a project →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Run SQL -->
+    <div class="step" id="step2">
+      <div class="step-header">
+        <div class="step-num"><span>2</span></div>
+        <div class="step-title">Create the posts table</div>
+      </div>
+      <div class="step-body">
+        <p>In your Supabase project, click <strong>"SQL Editor"</strong> in the left sidebar. Copy the code below, paste it in, and click <strong>"Run"</strong>.</p>
+        <div class="sql-block" id="sql-block">create table posts (
   id bigserial primary key,
   display_name text not null,
   content text not null,
@@ -323,15 +443,44 @@
 
 alter table posts enable row level security;
 create policy "read all" on posts for select using (true);
-create policy "insert all" on posts for insert with check (true);</code>
-    <p>Then paste your project URL and anon key (Settings → API):</p>
-    <div class="config-inputs">
-      <input id="cfg-url" type="text" placeholder="https://xxxxxxxxxxxx.supabase.co" autocomplete="off" spellcheck="false" />
-      <input id="cfg-key" type="text" placeholder="anon public key..." autocomplete="off" spellcheck="false" />
+create policy "insert all" on posts for insert with check (true);<button class="copy-btn" id="copy-sql-btn">Copy</button></div>
+        <button class="step-btn" id="step2-done-btn">Done, I ran it →</button>
+      </div>
     </div>
-    <button class="config-save-btn" id="cfg-save-btn">Save &amp; connect</button>
+
+    <!-- Step 3: Project URL -->
+    <div class="step" id="step3">
+      <div class="step-header">
+        <div class="step-num"><span>3</span></div>
+        <div class="step-title">Enter your Project URL</div>
+      </div>
+      <div class="step-body">
+        <p>In the left sidebar go to <strong>Settings → API</strong>. Under <strong>"Project URL"</strong> you'll see a link that looks like <strong>https://abcdefgh.supabase.co</strong> — copy and paste it below.</p>
+        <div class="hint-img">💡 It's under <span>Settings → API → Project URL</span>. Starts with https:// and ends with .supabase.co</div>
+        <input class="step-input" id="input-url" type="text" placeholder="https://abcdefgh.supabase.co" autocomplete="off" spellcheck="false" />
+        <span class="error-msg" id="url-error">Doesn't look right — make sure it starts with https:// and ends with .supabase.co</span>
+        <button class="step-btn" id="step3-done-btn">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Anon key -->
+    <div class="step" id="step4">
+      <div class="step-header">
+        <div class="step-num"><span>4</span></div>
+        <div class="step-title">Enter your Anon Key</div>
+      </div>
+      <div class="step-body">
+        <p>Still on the same <strong>Settings → API</strong> page. Scroll down to <strong>"Project API keys"</strong>. Copy the key listed under <strong>"anon public"</strong> and paste it below. It's a long string of random letters and numbers.</p>
+        <div class="hint-img">💡 It's the <span>anon public</span> key — NOT the service_role key. The anon key is safe to use here.</div>
+        <input class="step-input" id="input-key" type="text" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." autocomplete="off" spellcheck="false" />
+        <span class="error-msg" id="key-error">That doesn't look right — the anon key is a long string starting with eyJ...</span>
+        <button class="step-btn" id="step4-done-btn">Connect →</button>
+      </div>
+    </div>
+
   </div>
 
+  <!-- Compose (hidden until setup done) -->
   <div id="compose" style="display:none;">
     <div id="compose-top">
       <span id="compose-name">set name…</span>
@@ -343,11 +492,13 @@ create policy "insert all" on posts for insert with check (true);</code>
     </div>
   </div>
 
+  <!-- Feed -->
   <div id="posts-feed"></div>
   <div id="load-sentinel"></div>
 
 </div>
 
+<!-- Name modal -->
 <div id="name-modal-overlay" style="display:none;">
   <div id="name-modal">
     <h2>Choose your display name</h2>
@@ -379,10 +530,10 @@ create policy "insert all" on posts for insert with check (true);</code>
 </footer>
 
 <script>
-  const SB_URL_KEY  = 'mtg_sb_url';
-  const SB_KEY_KEY  = 'mtg_sb_key';
-  const NAME_KEY    = 'mtg_display_name';
-  const PAGE_SIZE   = 20;
+  const SB_URL_KEY = 'mtg_sb_url';
+  const SB_KEY_KEY = 'mtg_sb_key';
+  const NAME_KEY   = 'mtg_display_name';
+  const PAGE_SIZE  = 20;
 
   let sbUrl  = localStorage.getItem(SB_URL_KEY) || '';
   let sbKey  = localStorage.getItem(SB_KEY_KEY) || '';
@@ -393,22 +544,82 @@ create policy "insert all" on posts for insert with check (true);</code>
   let exhausted = false;
   let prepended = 0;
 
-  const configBanner   = document.getElementById('config-banner');
-  const cfgUrl         = document.getElementById('cfg-url');
-  const cfgKey         = document.getElementById('cfg-key');
-  const cfgSaveBtn     = document.getElementById('cfg-save-btn');
-  const compose        = document.getElementById('compose');
-  const composeName    = document.getElementById('compose-name');
-  const composeTa      = document.getElementById('compose-ta');
-  const composeCounter = document.getElementById('compose-counter');
-  const postBtn        = document.getElementById('post-btn');
-  const feed           = document.getElementById('posts-feed');
-  const sentinel       = document.getElementById('load-sentinel');
-  const nameOverlay    = document.getElementById('name-modal-overlay');
-  const nameInput      = document.getElementById('name-input');
-  const nameCharCount  = document.getElementById('name-char-count');
-  const setNameBtn     = document.getElementById('set-name-btn');
+  // ── Elements ──────────────────────────────────────────────────
+  const setupEl       = document.getElementById('setup');
+  const step1         = document.getElementById('step1');
+  const step2         = document.getElementById('step2');
+  const step3         = document.getElementById('step3');
+  const step4         = document.getElementById('step4');
+  const composeEl     = document.getElementById('compose');
+  const composeName   = document.getElementById('compose-name');
+  const composeTa     = document.getElementById('compose-ta');
+  const composeCounter= document.getElementById('compose-counter');
+  const postBtn       = document.getElementById('post-btn');
+  const feed          = document.getElementById('posts-feed');
+  const sentinel      = document.getElementById('load-sentinel');
+  const nameOverlay   = document.getElementById('name-modal-overlay');
+  const nameInput     = document.getElementById('name-input');
+  const nameCharCount = document.getElementById('name-char-count');
+  const setNameBtn    = document.getElementById('set-name-btn');
 
+  // ── Setup wizard logic ────────────────────────────────────────
+  function markDone(stepEl) {
+    stepEl.classList.add('done');
+  }
+
+  document.getElementById('step1-done-btn').addEventListener('click', () => {
+    markDone(step1);
+  });
+
+  document.getElementById('step2-done-btn').addEventListener('click', () => {
+    markDone(step2);
+  });
+
+  document.getElementById('copy-sql-btn').addEventListener('click', function() {
+    const sql = `create table posts (\n  id bigserial primary key,\n  display_name text not null,\n  content text not null,\n  created_at timestamptz default now()\n);\n\nalter table posts enable row level security;\ncreate policy "read all" on posts for select using (true);\ncreate policy "insert all" on posts for insert with check (true);`;
+    navigator.clipboard.writeText(sql).then(() => {
+      this.textContent = 'Copied!';
+      setTimeout(() => this.textContent = 'Copy', 2000);
+    });
+  });
+
+  document.getElementById('step3-done-btn').addEventListener('click', () => {
+    const val = document.getElementById('input-url').value.trim().replace(/\/$/, '');
+    const errEl = document.getElementById('url-error');
+    if (!val.startsWith('https://') || !val.includes('.supabase.co')) {
+      errEl.style.display = 'block';
+      return;
+    }
+    errEl.style.display = 'none';
+    sbUrl = val;
+    localStorage.setItem(SB_URL_KEY, sbUrl);
+    markDone(step3);
+  });
+
+  document.getElementById('step4-done-btn').addEventListener('click', async () => {
+    const val = document.getElementById('input-key').value.trim();
+    const errEl = document.getElementById('key-error');
+    if (val.length < 100) {
+      errEl.style.display = 'block';
+      return;
+    }
+    errEl.style.display = 'none';
+    sbKey = val;
+    localStorage.setItem(SB_KEY_KEY, sbKey);
+    markDone(step4);
+
+    // verify by doing a quick fetch
+    try {
+      await fetchPosts(0);
+      setupEl.style.display = 'none';
+      startApp();
+    } catch(e) {
+      errEl.textContent = 'Could not connect. Double-check both the URL and key and try again.';
+      errEl.style.display = 'block';
+    }
+  });
+
+  // ── Supabase ──────────────────────────────────────────────────
   function sbHeaders() {
     return {
       'apikey': sbKey,
@@ -435,24 +646,9 @@ create policy "insert all" on posts for insert with check (true);</code>
     if (!res.ok) throw new Error('insert failed');
   }
 
-  cfgSaveBtn.addEventListener('click', () => {
-    const u = cfgUrl.value.trim().replace(/\/$/, '');
-    const k = cfgKey.value.trim();
-    if (!u || !k) return;
-    sbUrl = u; sbKey = k;
-    localStorage.setItem(SB_URL_KEY, u);
-    localStorage.setItem(SB_KEY_KEY, k);
-    init();
-  });
-
-  function init() {
-    if (!sbUrl || !sbKey) {
-      configBanner.style.display = '';
-      compose.style.display = 'none';
-      return;
-    }
-    configBanner.style.display = 'none';
-    compose.style.display = '';
+  // ── App ───────────────────────────────────────────────────────
+  function startApp() {
+    composeEl.style.display = '';
     updateComposeName();
     loadMore();
   }
@@ -507,7 +703,6 @@ create policy "insert all" on posts for insert with check (true);</code>
     const text = composeTa.value.trim();
     if (!text) return;
     if (!myName) { openNameModal(); return; }
-
     postBtn.disabled = true;
     try {
       await insertPost(myName, text);
@@ -517,16 +712,14 @@ create policy "insert all" on posts for insert with check (true);</code>
       postBtn.disabled = true;
       prependPost({ display_name: myName, content: text, created_at: new Date().toISOString() });
     } catch(e) {
-      alert('Failed to post. Check your Supabase config.');
+      alert('Failed to post. Check your Supabase connection.');
       postBtn.disabled = false;
     }
   });
 
+  // ── Feed ──────────────────────────────────────────────────────
   function escHtml(s) {
-    return s
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;');
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
   function formatTime(iso) {
@@ -546,11 +739,7 @@ create policy "insert all" on posts for insert with check (true);</code>
   }
 
   function prependPost(post) {
-    const first = feed.querySelector('.post-card');
-    if (first) first.style.borderRadius = '';
-
-    const card = createCard(post);
-    feed.insertBefore(card, feed.firstChild);
+    feed.insertBefore(createCard(post), feed.firstChild);
     prepended++;
   }
 
@@ -566,7 +755,6 @@ create policy "insert all" on posts for insert with check (true);</code>
       const offset = page * PAGE_SIZE + prepended;
       const posts  = await fetchPosts(offset);
       spinner.remove();
-
       posts.forEach(p => feed.appendChild(createCard(p)));
       page++;
 
@@ -581,7 +769,7 @@ create policy "insert all" on posts for insert with check (true);</code>
       spinner.remove();
       const err = document.createElement('p');
       err.className = 'status-line';
-      err.textContent = 'Could not load posts. Check your config.';
+      err.textContent = 'Could not load posts.';
       feed.appendChild(err);
       exhausted = true;
     }
@@ -589,15 +777,18 @@ create policy "insert all" on posts for insert with check (true);</code>
     loading = false;
   }
 
+  // ── Infinite scroll ───────────────────────────────────────────
   const observer = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) loadMore();
   }, { rootMargin: '300px' });
-
   observer.observe(sentinel);
 
-  if (sbUrl) cfgUrl.value = sbUrl;
-  if (sbKey) cfgKey.value = sbKey;
-  init();
+  // ── Boot ──────────────────────────────────────────────────────
+  if (sbUrl && sbKey) {
+    // already configured — skip setup
+    setupEl.style.display = 'none';
+    startApp();
+  }
 </script>
 </body>
 </html>
