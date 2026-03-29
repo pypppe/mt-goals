@@ -296,29 +296,31 @@
       user-select: none;
     }
 
-    .theme-toggle-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: rgba(255,255,255,0.5);
-      font-family: 'Roboto Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 300;
-      padding: 6px 8px;
-      border-radius: 4px;
-      transition: color 0.2s;
-    }
-    .theme-toggle-btn:hover {
-      color: rgba(255,255,255,1);
-    }
-    .theme-toggle-btn svg {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-    }
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.5);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 300;
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+.theme-toggle-btn:hover {
+  color: rgba(255,255,255,1);
+}
+.theme-toggle-btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  opacity: inherit;
+}
   </style>
 </head>
 <body>
@@ -353,12 +355,12 @@
     github
   </a>
   <span class="footer-divider">/</span>
-  <a class="footer-link" href="/posts">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20,3H4A2,2,0,0,0,2,5V22l5.36-5H20a2,2,0,0,0,2-2V5A2,2,0,0,0,20,3Z" fill="currentColor"/>
-    </svg>
-    posts
-  </a>
+<a class="footer-link" href="/pages/policy">
+  <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M4 6V4C4 1.79086 5.79086 0 8 0C10.2091 0 12 1.79086 12 4V6H14V16H2V6H4ZM6 4C6 2.89543 6.89543 2 8 2C9.10457 2 10 2.89543 10 4V6H6V4ZM7 13V9H9V13H7Z" fill="currentColor"/>
+  </svg>
+  policy
+</a>
 </footer>
 
 <div class="middle">
