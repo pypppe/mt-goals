@@ -36,11 +36,18 @@
     .error-row {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 36px;
+    }
+
+    .error-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
     }
 
     .mug-img {
-      height: 110px;
+      height: 180px;
       width: auto;
     }
 
@@ -386,20 +393,22 @@
 <div class="middle">
   <div class="error-row">
     <img src="/images/mtmug.avif" alt="Monkeytype Mug" class="mug-img" />
-    <div class="error-code">404</div>
+    <div class="error-right">
+      <div class="error-code">404</div>
+      <a href="/" class="home-btn">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0L0 6V8H1V15H4V10H7V15H15V8H16V6L14 4.5V1H11V2.25L8 0ZM9 10H12V13H9V10Z" fill="#ffffff"></path>
+        </svg>
+        Go Home
+      </a>
+      <a href="https://monkeytype.store/en-gbp/products/monkeytype-mug" target="_blank" rel="noopener noreferrer" class="home-btn purchase-btn">
+        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width:14px;height:14px;flex-shrink:0;">
+          <path fill="#e2b714" d="M44,20v-8c0-6.629-5.371-12-12-12S20,5.371,20,12v8H8v40c0,2.211,1.789,4,4,4h40c2.211,0,4-1.789,4-4V20H44z M28,12c0-2.211,1.789-4,4-4s4,1.789,4,4v8h-8V12z"></path>
+        </svg>
+        Purchase!
+      </a>
+    </div>
   </div>
-  <a href="/" class="home-btn">
-    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0L0 6V8H1V15H4V10H7V15H15V8H16V6L14 4.5V1H11V2.25L8 0ZM9 10H12V13H9V10Z" fill="#ffffff"></path>
-    </svg>
-    Go Home
-  </a>
-  <a href="https://monkeytype.store/en-gbp/products/monkeytype-mug" target="_blank" rel="noopener noreferrer" class="home-btn purchase-btn">
-    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width:14px;height:14px;flex-shrink:0;">
-      <path fill="#e2b714" d="M44,20v-8c0-6.629-5.371-12-12-12S20,5.371,20,12v8H8v40c0,2.211,1.789,4,4,4h40c2.211,0,4-1.789,4-4V20H44z M28,12c0-2.211,1.789-4,4-4s4,1.789,4,4v8h-8V12z"></path>
-    </svg>
-    Purchase!
-  </a>
 </div>
 
 <div class="footer-right">
