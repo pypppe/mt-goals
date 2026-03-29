@@ -717,11 +717,22 @@ addBtn.addEventListener('click', showInputRow);
 loadGoals().forEach(g => renderGoal(g.text, g.id));
 
 function launchConfetti() {
-  confetti({
-    particleCount: 120,
-    spread: 80,
-    origin: { y: 0.6 },
+  const defaults = {
+    particleCount: 60,
+    spread: 55,
     colors: ['#e2b714', '#0096FF', '#FF69B4']
+  };
+
+  confetti({
+    ...defaults,
+    angle: 60,
+    origin: { x: 0, y: 1 }
+  });
+
+  confetti({
+    ...defaults,
+    angle: 120,
+    origin: { x: 1, y: 1 }
   });
 }
 </script>
