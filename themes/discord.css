@@ -310,3 +310,20 @@
       height: 16px;
       flex-shrink: 0;
     }
+
+.goal-edit-row {
+  display: flex; align-items: flex-start; background-color: #2b2d31;
+  border-radius: 8px; padding: 10px 14px; gap: 12px; animation: fadeIn 0.2s ease;
+  box-shadow: 0 0 0 2px #5974ea;
+}
+.goal-edit-row textarea {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: #fff; font-family: 'Roboto Mono', monospace; font-size: 0.88rem;
+  resize: none; min-height: 42px; line-height: 1.5; padding-top: 4px;
+}
+.edit-btn {
+  background: none; border: none; cursor: pointer; padding: 2px;
+  flex-shrink: 0; opacity: 0.55; transition: opacity 0.15s; display: flex; align-items: center;
+}
+.edit-btn:hover { opacity: 1; }
+.edit-btn svg { width: 18px; height: 18px; display: block; }
