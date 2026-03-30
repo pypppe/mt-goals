@@ -131,7 +131,7 @@
     .pin-btn {
       color: #5974ea;
     }
-    .pin-btn:hover { background: rgba(226,183,20,0.12); }
+    .pin-btn:hover { background: rgba(48,20,227,0.12); }
     .pin-btn.disabled {
       opacity: 0.35;
       cursor: not-allowed;
