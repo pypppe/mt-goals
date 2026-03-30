@@ -96,9 +96,6 @@
     .purchase-btn:hover {
       color: #f0cb30;
     }
-    .purchase-btn svg path {
-      fill: #e2b714;
-    }
 
     header {
       text-align: center;
@@ -323,31 +320,31 @@
       user-select: none;
     }
 
-.theme-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: rgba(255,255,255,0.5);
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.78rem;
-  font-weight: 300;
-  text-decoration: none;
-  padding: 6px 8px;
-  border-radius: 4px;
-  transition: color 0.2s;
-}
-.theme-toggle-btn:hover {
-  color: rgba(255,255,255,1);
-}
-.theme-toggle-btn svg {
-  width: 15px;
-  height: 15px;
-  flex-shrink: 0;
-  opacity: inherit;
-}
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(255,255,255,0.5);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 300;
+      text-decoration: none;
+      padding: 6px 8px;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+    .theme-toggle-btn:hover {
+      color: rgba(255,255,255,1);
+    }
+    .theme-toggle-btn svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      opacity: inherit;
+    }
   </style>
 </head>
 <body>
@@ -382,17 +379,17 @@
     github
   </a>
   <span class="footer-divider">/</span>
-<a class="footer-link" href="/pages/policy">
-  <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M4 6V4C4 1.79086 5.79086 0 8 0C10.2091 0 12 1.79086 12 4V6H14V16H2V6H4ZM6 4C6 2.89543 6.89543 2 8 2C9.10457 2 10 2.89543 10 4V6H6V4ZM7 13V9H9V13H7Z" fill="currentColor"/>
-  </svg>
-  policy
-</a>
+  <a class="footer-link" href="/pages/policy">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M4 6V4C4 1.79086 5.79086 0 8 0C10.2091 0 12 1.79086 12 4V6H14V16H2V6H4ZM6 4C6 2.89543 6.89543 2 8 2C9.10457 2 10 2.89543 10 4V6H6V4ZM7 13V9H9V13H7Z" fill="currentColor"/>
+    </svg>
+    policy
+  </a>
 </footer>
 
 <div class="middle">
   <div class="error-row">
-    <img src="/images/mtmug.avif" alt="Monkeytype Mug" class="mug-img" />
+    <img id="promo-img" src="" alt="Promo" class="mug-img" />
     <div class="error-right">
       <div class="error-code">404</div>
       <a href="/" class="home-btn">
@@ -401,11 +398,9 @@
         </svg>
         Go Home
       </a>
-      <a href="https://monkeytype.store/en-gbp/products/monkeytype-mug" target="_blank" rel="noopener noreferrer" class="home-btn purchase-btn">
-        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width:14px;height:14px;flex-shrink:0;">
-          <path fill="#e2b714" d="M44,20v-8c0-6.629-5.371-12-12-12S20,5.371,20,12v8H8v40c0,2.211,1.789,4,4,4h40c2.211,0,4-1.789,4-4V20H44z M28,12c0-2.211,1.789-4,4-4s4,1.789,4,4v8h-8V12z"></path>
-        </svg>
-        Purchase!
+      <a id="promo-btn" href="#" target="_blank" rel="noopener noreferrer" class="home-btn purchase-btn">
+        <span id="promo-icon"></span>
+        <span id="promo-label"></span>
       </a>
     </div>
   </div>
@@ -423,50 +418,96 @@
 <script src="/mt-stats-widget.js"></script>
 
 <script>
-const STORAGE_KEY = 'monkeytype_goals';
-const THEME_KEY   = 'monkeytype_goals_theme';
-const container   = document.getElementById('goalsContainer');
-const addBtn      = document.getElementById('addBtn');
-const MAX         = 180;
+  const PROMO_ITEMS = [
+    {
+      img:   '/images/mtmug.avif',
+      label: 'Purchase!',
+      href:  'https://monkeytype.store/en-eur/products/monkeytype-mug',
+      icon:  `<svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width:14px;height:14px;flex-shrink:0;"><path fill="#e2b714" d="M44,20v-8c0-6.629-5.371-12-12-12S20,5.371,20,12v8H8v40c0,2.211,1.789,4,4,4h40c2.211,0,4-1.789,4-4V20H44z M28,12c0-2.211,1.789-4,4-4s4,1.789,4,4v8h-8V12z"></path></svg>`
+    },
+    {
+      img:   '/images/georgenotepad.avif',
+      label: 'Purchase!',
+      href:  'https://monkeytype.store/en-eur/products/george-notepad',
+      icon:  `<svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width:14px;height:14px;flex-shrink:0;"><path fill="#e2b714" d="M44,20v-8c0-6.629-5.371-12-12-12S20,5.371,20,12v8H8v40c0,2.211,1.789,4,4,4h40c2.211,0,4-1.789,4-4V20H44z M28,12c0-2.211,1.789-4,4-4s4,1.789,4,4v8h-8V12z"></path></svg>`
+    },
+    {
+      img:   '/images/mthat.avif',
+      label: 'Purchase!',
+      href:  'https://monkeytype.store/en-eur/products/mt-dad-hat-classic-embroidered',
+      icon:  `<svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width:14px;height:14px;flex-shrink:0;"><path fill="#e2b714" d="M44,20v-8c0-6.629-5.371-12-12-12S20,5.371,20,12v8H8v40c0,2.211,1.789,4,4,4h40c2.211,0,4-1.789,4-4V20H44z M28,12c0-2.211,1.789-4,4-4s4,1.789,4,4v8h-8V12z"></path></svg>`
+    },
+    {
+      img:   '/images/mthoodie.avif',
+      label: 'Purchase!',
+      href:  'https://monkeytype.store/en-eur/products/mt-hoodie-classic-embroidered',
+      icon:  `<svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width:14px;height:14px;flex-shrink:0;"><path fill="#e2b714" d="M44,20v-8c0-6.629-5.371-12-12-12S20,5.371,20,12v8H8v40c0,2.211,1.789,4,4,4h40c2.211,0,4-1.789,4-4V20H44z M28,12c0-2.211,1.789-4,4-4s4,1.789,4,4v8h-8V12z"></path></svg>`
+    },
+    {
+      img:   '/images/mtshirt.avif',
+      label: 'Purchase!',
+      href:  'https://monkeytype.store/en-eur/products/ultimate-comfort-garment-dyed-heavyweight-tee',
+      icon:  `<svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width:14px;height:14px;flex-shrink:0;"><path fill="#e2b714" d="M44,20v-8c0-6.629-5.371-12-12-12S20,5.371,20,12v8H8v40c0,2.211,1.789,4,4,4h40c2.211,0,4-1.789,4-4V20H44z M28,12c0-2.211,1.789-4,4-4s4,1.789,4,4v8h-8V12z"></path></svg>`
+    },
+    {
+      img:   '/images/stickersheet.avif',
+      label: 'Purchase!',
+      href:  'https://monkeytype.store/en-eur/products/sticker-sheet-2',
+      icon:  `<svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width:14px;height:14px;flex-shrink:0;"><path fill="#e2b714" d="M44,20v-8c0-6.629-5.371-12-12-12S20,5.371,20,12v8H8v40c0,2.211,1.789,4,4,4h40c2.211,0,4-1.789,4-4V20H44z M28,12c0-2.211,1.789-4,4-4s4,1.789,4,4v8h-8V12z"></path></svg>`
+    },
+    {
+      img:   '/images/discord.webp',
+      label: 'Join!',
+      href:  'https://discord.gg/Pn6B28fPg6',
+      icon:  `<svg viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;flex-shrink:0;" fill="none"><g fill="#ffffff" transform="translate(85.333333, 64.000000)"><path d="M128,63.999444 L128,106.666444 L42.6666667,106.666667 L42.6666667,320 L256,320 L256,234.666444 L298.666,234.666444 L298.666667,362.666667 L4.26325641e-14,362.666667 L4.26325641e-14,64 L128,63.999444 Z M362.666667,1.42108547e-14 L362.666667,170.666667 L320,170.666667 L320,72.835 L143.084945,249.751611 L112.915055,219.581722 L289.83,42.666 L192,42.6666667 L192,1.42108547e-14 L362.666667,1.42108547e-14 Z"/></g></svg>`
+    }
+  ];
 
-const themeBtn        = document.getElementById('themeToggleBtn');
-const themeLabel      = document.getElementById('themeLabel');
-const themeStylesheet = document.getElementById('theme-stylesheet');
-const defaultStyle    = document.getElementById('default-style');
-const headerLogo      = document.getElementById('header-logo');
+  const promo = PROMO_ITEMS[Math.floor(Math.random() * PROMO_ITEMS.length)];
 
-let isDiscord = localStorage.getItem(THEME_KEY) === 'discord';
+  document.getElementById('promo-img').src       = promo.img;
+  document.getElementById('promo-btn').href      = promo.href;
+  document.getElementById('promo-icon').innerHTML = promo.icon;
+  document.getElementById('promo-label').textContent = promo.label;
 
-function applyTheme(discord) {
-  let favicon = document.querySelector("link[rel~='icon']");
-  if (!favicon) {
-    favicon = document.createElement('link');
-    favicon.rel = 'icon';
-    document.head.appendChild(favicon);
+  const STORAGE_KEY = 'monkeytype_goals';
+  const THEME_KEY   = 'monkeytype_goals_theme';
+
+  const themeBtn        = document.getElementById('themeToggleBtn');
+  const themeLabel      = document.getElementById('themeLabel');
+  const themeStylesheet = document.getElementById('theme-stylesheet');
+  const headerLogo      = document.getElementById('header-logo');
+
+  let isDiscord = localStorage.getItem(THEME_KEY) === 'discord';
+
+  function applyTheme(discord) {
+    let favicon = document.querySelector("link[rel~='icon']");
+    if (!favicon) {
+      favicon = document.createElement('link');
+      favicon.rel = 'icon';
+      document.head.appendChild(favicon);
+    }
+
+    if (discord) {
+      themeStylesheet.href = '/themes/discord.css';
+      themeLabel.textContent = 'Discord';
+      headerLogo.src = '/images/mtgoals_discord.png';
+      favicon.href = '/images/mtg_discord.png';
+    } else {
+      themeStylesheet.href = '';
+      themeLabel.textContent = 'Default';
+      headerLogo.src = '/images/mtgoals.png';
+      favicon.href = '/images/mtg.png';
+    }
   }
 
-  if (discord) {
-    themeStylesheet.href = '/themes/discord.css';
-    defaultStyle.disabled = true;
-    themeLabel.textContent = 'Discord';
-    headerLogo.src = '/images/mtgoals_discord.png';
-    favicon.href = '/images/mtg_discord.png';
-  } else {
-    themeStylesheet.href = '';
-    defaultStyle.disabled = false;
-    themeLabel.textContent = 'Default';
-    headerLogo.src = '/images/mtgoals.png';
-    favicon.href = '/images/mtg.png';
-  }
-}
-
-applyTheme(isDiscord);
-
-themeBtn.addEventListener('click', () => {
-  isDiscord = !isDiscord;
-  localStorage.setItem(THEME_KEY, isDiscord ? 'discord' : 'default');
   applyTheme(isDiscord);
-});
+
+  themeBtn.addEventListener('click', () => {
+    isDiscord = !isDiscord;
+    localStorage.setItem(THEME_KEY, isDiscord ? 'discord' : 'default');
+    applyTheme(isDiscord);
+  });
 </script>
 
 </body>
