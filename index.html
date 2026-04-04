@@ -84,7 +84,15 @@
       gap: 12px;
     }
 
+    /* Row that holds the add button + export/import icons */
+    .add-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .add-btn {
+      flex: 1;
       background-color: #2b2d31;
       border: none;
       border-radius: 8px;
@@ -95,11 +103,35 @@
       text-align: left;
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
-      width: 100%;
     }
     .add-btn:hover {
       background-color: #35373d;
       color: rgba(255,255,255,0.7);
+    }
+
+    /* Export / Import icon buttons */
+    .icon-action-btn {
+      background-color: #2b2d31;
+      border: none;
+      border-radius: 8px;
+      padding: 0 12px;
+      height: 48px; /* matches add-btn height */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0.55;
+      transition: background 0.2s, opacity 0.2s;
+      flex-shrink: 0;
+    }
+    .icon-action-btn:hover {
+      background-color: #35373d;
+      opacity: 1;
+    }
+    .icon-action-btn svg {
+      width: 20px;
+      height: 20px;
+      display: block;
     }
 
     .goal-input-row {
@@ -377,6 +409,77 @@
 }
 .edit-btn:hover { opacity: 1; }
 .edit-btn svg { width: 18px; height: 18px; display: block; }
+
+/* Override confirm modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  animation: fadeIn 0.15s ease;
+}
+
+.modal-box {
+  background: #2b2d31;
+  border-radius: 10px;
+  padding: 28px 28px 22px;
+  max-width: 400px;
+  width: calc(100% - 40px);
+  font-family: 'Roboto Mono', monospace;
+  color: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  animation: fadeIn 0.18s ease;
+}
+
+.modal-box p {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 22px;
+}
+
+.modal-box p .override-word {
+  color: #ff4d4d;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.modal-no-btn, .modal-yes-btn {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.82rem;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.modal-no-btn {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7);
+}
+.modal-no-btn:hover {
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+}
+
+.modal-yes-btn {
+  background: #e2b714;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+.modal-yes-btn:hover {
+  background: #f0c71e;
+}
   </style>
 </head>
 <body>
@@ -395,7 +498,27 @@
 </header>
 
 <div class="container" id="goalsContainer">
-  <button class="add-btn" id="addBtn">+ Add a new goal...</button>
+  <div class="add-row" id="addRow">
+    <button class="add-btn" id="addBtn">+ Add a new goal...</button>
+
+    <button class="icon-action-btn" id="exportBtn" title="Export goals to goals.json">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M3,12.3v7a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2v-7" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+        <polyline fill="none" points="7.9 12.3 12 16.3 16.1 12.3" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
+        <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="2.7" y2="14.2"></line>
+      </svg>
+    </button>
+
+    <button class="icon-action-btn" id="importBtn" title="Import goals from goals.json">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" style="transform: scaleY(-1);">
+        <path d="M3,12.3v7a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2v-7" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+        <polyline fill="none" points="7.9 12.3 12 16.3 16.1 12.3" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
+        <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="2.7" y2="14.2"></line>
+      </svg>
+    </button>
+
+    <input type="file" id="importFileInput" accept=".json" style="display:none;">
+  </div>
 </div>
 
 <footer class="footer">
@@ -439,6 +562,7 @@
 const STORAGE_KEY = 'monkeytype_goals';
 const THEME_KEY   = 'monkeytype_goals_theme';
 const container   = document.getElementById('goalsContainer');
+const addRow      = document.getElementById('addRow');
 const addBtn      = document.getElementById('addBtn');
 const MAX         = 180;
 const MIN_LETTERS = 10;
@@ -857,6 +981,104 @@ function showEditRow(card, id, currentText) {
   card.after(editRow);
   ta.focus();
   ta.setSelectionRange(ta.value.length, ta.value.length);
+}
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const goals = loadGoals();
+  const blob = new Blob([JSON.stringify(goals, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'goals.json';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+const importFileInput = document.getElementById('importFileInput');
+
+document.getElementById('importBtn').addEventListener('click', () => {
+  importFileInput.value = '';
+  importFileInput.click();
+});
+
+importFileInput.addEventListener('change', () => {
+  const file = importFileInput.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    let imported;
+    try {
+      imported = JSON.parse(e.target.result);
+    } catch {
+      alert('Invalid JSON file.');
+      return;
+    }
+
+    if (!Array.isArray(imported) || imported.some(g => typeof g.text !== 'string')) {
+      alert('This doesn\'t look like a valid goals.json file.');
+      return;
+    }
+
+    const existing = loadGoals();
+    if (existing.length > 0) {
+      showImportConfirmModal(imported);
+    } else {
+      doImport(imported);
+    }
+  };
+  reader.readAsText(file);
+});
+
+function doImport(goals) {
+  const normalised = goals.map(g => ({
+    id: g.id || Date.now().toString() + Math.random(),
+    text: g.text
+  }));
+  saveGoals(normalised);
+
+  getCards().forEach(c => c.remove());
+
+  normalised.forEach(g => renderGoal(g.text, g.id));
+}
+
+function showImportConfirmModal(pendingGoals) {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+
+  const box = document.createElement('div');
+  box.className = 'modal-box';
+
+  const p = document.createElement('p');
+  p.innerHTML = 'You already have goals, importing these goals will <span class="override-word">override</span> the existing goals. Are you sure?';
+
+  const actions = document.createElement('div');
+  actions.className = 'modal-actions';
+
+  const noBtn = document.createElement('button');
+  noBtn.className = 'modal-no-btn';
+  noBtn.textContent = 'No!';
+
+  const yesBtn = document.createElement('button');
+  yesBtn.className = 'modal-yes-btn';
+  yesBtn.textContent = 'Yes!';
+
+  noBtn.addEventListener('click', () => overlay.remove());
+  yesBtn.addEventListener('click', () => {
+    overlay.remove();
+    doImport(pendingGoals);
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.remove();
+  });
+
+  actions.appendChild(noBtn);
+  actions.appendChild(yesBtn);
+  box.appendChild(p);
+  box.appendChild(actions);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
 }
 </script>
 </body>
