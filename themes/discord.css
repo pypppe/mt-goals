@@ -58,6 +58,13 @@
       gap: 12px;
     }
 
+    /* Row that holds the add button + export/import icons */
+    .add-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .add-btn {
       background-color: #2b2d31;
       border: none;
@@ -74,6 +81,31 @@
     .add-btn:hover {
       background-color: #35373d;
       color: rgba(255,255,255,0.7);
+    }
+
+    /* Export / Import icon buttons */
+    .icon-action-btn {
+      background-color: #2b2d31;
+      border: none;
+      border-radius: 8px;
+      padding: 0 12px;
+      height: 48px; /* matches add-btn height */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0.55;
+      transition: background 0.2s, opacity 0.2s;
+      flex-shrink: 0;
+    }
+    .icon-action-btn:hover {
+      background-color: #35373d;
+      opacity: 1;
+    }
+    .icon-action-btn svg {
+      width: 20px;
+      height: 20px;
+      display: block;
     }
 
     .goal-input-row {
@@ -359,3 +391,73 @@
 .edit-btn:hover { opacity: 1; }
 .edit-btn svg { width: 18px; height: 18px; display: block; }
 
+/* Override confirm modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  animation: fadeIn 0.15s ease;
+}
+
+.modal-box {
+  background: #2b2d31;
+  border-radius: 10px;
+  padding: 28px 28px 22px;
+  max-width: 400px;
+  width: calc(100% - 40px);
+  font-family: 'Roboto Mono', monospace;
+  color: #fff;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  animation: fadeIn 0.18s ease;
+}
+
+.modal-box p {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 22px;
+}
+
+.modal-box p .override-word {
+  color: #ff4d4d;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.modal-no-btn, .modal-yes-btn {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.82rem;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.modal-no-btn {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7);
+}
+.modal-no-btn:hover {
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+}
+
+.modal-yes-btn {
+  background: #e2b714;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+.modal-yes-btn:hover {
+  background: #f0c71e;
+}
